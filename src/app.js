@@ -23,15 +23,39 @@
 //    res.send("Data is updated now Check..!!")
 //   })
 
-app.use("/user",[
-   (req,res,next)=>{
-   //Route Handler
-   res.send("Route Handler 1")
-   next();
-},(req,res)=>{ 
-   res.send("Route Handler 2")
+// app.use("/user",
+//    (req,res,next)=>{
+//    //Route Handler
+//    // res.send("Route Handler 1")
+//    next();
+// });
+// app.use("/user",
+//    (req,res,next)=>{
+//    //Route Handler
+//    res.send("Route Handler 2")
+//    next();
+// });  
 
-}]);
+//HANDLE AUTH MIDDLEWARES FOR ALL GET POST---- REQUESTS
+//this is the middleware
+app.use("/admin",(req,res,next)=>{
+   console.log('admin auth is getting checked')
+   const token="xyz";
+   const isAdminAuthorized=token==="xyz";
+   if(!isAdminAuthorized){
+      res.status(401).send("unauthorized access")
+
+   }
+   else{
+      next();
+   }
+}
+
+
+)
+app.get("/admin/getAllData",(req,res)=>{
+   res.send("All data is sent")
+})
 
 app.listen(3000,()=>{
    console.log('server is successfully listening on 3000...')
