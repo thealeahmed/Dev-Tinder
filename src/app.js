@@ -56,7 +56,9 @@ app.use("/admin",(req,res,next)=>{
 app.get("/admin/getAllData",(req,res)=>{
    res.send("All data is sent")
 })
-
+app.get("/admin/deleteuser",(req,res)=>{
+   res.send("user is deleted")
+})
 app.listen(3000,()=>{
    console.log('server is successfully listening on 3000...')
 })
