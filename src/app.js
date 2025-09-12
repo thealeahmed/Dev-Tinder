@@ -13,6 +13,41 @@ app.post('/signup',async(req,res)=>{
 res.send("User added successfully")
 })
 
+app.get("/user",async(req,res)=>{
+   const email=req.body.emailId;
+   //I will call the find method on user model
+try{
+   //GET USER BY EMAIL
+  const users= await  User.find({
+      emailId:email,
+   })
+   if(users.length===0){
+      res.status(404).send("user not found")
+   }else{
+  res.send(users)
+   }
+}
+catch (err){
+   res.status(400).send("Something went wrong ")
+   
+}
+})
+
+//FEED API-GET /feed -get all the users from the db
+
+app.get("/feed",async (req,res)=>{
+try{
+   const users=await User.find({
+
+   })
+res.send(users)
+}
+catch (err){
+   res.status(400).send("Something went wrong ")
+   
+}
+})
+
 connectDB()
 .then(()=>{
    console.log("Database is connected successfully")
