@@ -83,16 +83,28 @@ catch (err) {
 
 //Update data of the user
 
-app.patch("/user", async(req,res)=>{
-   const userid=req.body._id;
+app.patch("/user/:userId", async(req,res)=>{
+   const userid=req.params?.userId;
    const data=req.body;
    try{
-      await User.findByIdAndUpdate(userid ,data)
+        const ALLOWED_UPDATES=["photoUrl","about","gender","age"]
+   const isUpdateAllowed=Object.keys(data).every((k)=>
+      ALLOWED_UPDATES.includes(k)
+   )
+   if(!isUpdateAllowed){
+      throw new Error("Update not Allowed ")
+   }
+   if(data?.skills.length>10){
+      throw new Error("Skill cannot be more than 10 ")
+   }
+      await User.findByIdAndUpdate(userid ,data<{
+         runValidators:true
+      })
       res.send("user updated successfully")
    }
    catch (err) {
       console.error(err);
-    res.status(400).send("Something went wrong");
+    res.status(400).send("Update Failed" +err.message);
   }
 }) 
 connectDB()
