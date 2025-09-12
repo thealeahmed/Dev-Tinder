@@ -47,7 +47,54 @@ catch (err){
    
 }
 })
+app.get("/id", async (req, res) => {{
+  const userid = req.body._id; // ⚠️ Usually GET doesn't have a body, but I'll keep it since you want
 
+  try {
+    console.log(userid);
+
+    const users = await User.findById(userid);
+
+    if (!users) {
+      return res.status(404).send("user not found");
+    } else {
+      console.log(users);
+      res.send(users);
+      console.log(users);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(400).send("Something went wrong");
+  }
+}})
+
+
+app.delete('/user', async(req,res)=>{
+const userid = req.body._id;
+try{
+   const user=await User.findByIdAndDelete(userid)
+   res.send("user deleted successfully")
+}
+catch (err) {
+    console.error(err);
+    res.status(400).send("Something went wrong");
+  }
+})
+
+//Update data of the user
+
+app.patch("/user", async(req,res)=>{
+   const userid=req.body._id;
+   const data=req.body;
+   try{
+      await User.findByIdAndUpdate(userid ,data)
+      res.send("user updated successfully")
+   }
+   catch (err) {
+      console.error(err);
+    res.status(400).send("Something went wrong");
+  }
+}) 
 connectDB()
 .then(()=>{
    console.log("Database is connected successfully")
